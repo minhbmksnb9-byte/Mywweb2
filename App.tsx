@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import ForumPage from './pages/ForumPage';
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route path="forum" element={<ForumPage />} />
                 <Route path="chat" element={<ChatPage />} />
+                <Route path="profile/:userId" element={<ProfilePage />} />
               </Route>
               
               <Route path="*" element={<Navigate to="/" replace />} />

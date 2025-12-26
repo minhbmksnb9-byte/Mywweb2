@@ -1,12 +1,25 @@
 import { User, Post, Message } from './types';
 
+export const AI_BOT: User = {
+  id: 'ai-natch',
+  name: 'Natch(minhbmksnb9)',
+  email: 'ai@binhminhwl.com',
+  avatar: 'https://ui-avatars.com/api/?name=AI&background=0D8ABC&color=fff',
+  role: 'ai',
+  isOnline: true,
+  friendIds: [],
+  blockedIds: []
+};
+
 export const MOCK_ADMIN: User = {
   id: 'admin-1',
-  name: 'Nexus Official',
-  email: 'admin@nexus.com',
+  name: 'BinhMinhWL Admin',
+  email: 'admin123@gmail.com',
   avatar: 'https://picsum.photos/seed/admin/200/200',
   role: 'admin',
   isOnline: true,
+  friendIds: ['user-1', 'user-2', 'user-3'],
+  blockedIds: []
 };
 
 export const MOCK_USER: User = {
@@ -16,6 +29,8 @@ export const MOCK_USER: User = {
   avatar: 'https://picsum.photos/seed/alex/200/200',
   role: 'user',
   isOnline: true,
+  friendIds: ['admin-1'],
+  blockedIds: []
 };
 
 export const MOCK_USERS: User[] = [
@@ -28,6 +43,8 @@ export const MOCK_USERS: User[] = [
     avatar: 'https://picsum.photos/seed/sarah/200/200',
     role: 'user',
     isOnline: false,
+    friendIds: ['admin-1'],
+    blockedIds: []
   },
   {
     id: 'user-3',
@@ -36,14 +53,17 @@ export const MOCK_USERS: User[] = [
     avatar: 'https://picsum.photos/seed/john/200/200',
     role: 'user',
     isOnline: true,
+    friendIds: ['admin-1'],
+    blockedIds: []
   },
+  AI_BOT
 ];
 
 export const INITIAL_POSTS: Post[] = [
   {
     id: 'p-1',
     userId: 'admin-1',
-    content: 'Welcome to Nexus Social v2.0! We have updated our privacy policy and added new dark mode features. Enjoy the experience.',
+    content: 'Chào mừng đến với BinhMinhWL! Chúng tôi đã cập nhật hệ thống chat AI mới tên là Natch.',
     images: ['https://picsum.photos/seed/update/800/400'],
     likes: 1240,
     timestamp: Date.now() - 10000000,
@@ -54,7 +74,7 @@ export const INITIAL_POSTS: Post[] = [
   {
     id: 'p-2',
     userId: 'user-2',
-    content: 'Does anyone know how to optimize React re-renders efficiently? Im struggling with a large list.',
+    content: 'Mọi người đã thử chat với Natch chưa? Nó thông minh lắm!',
     likes: 45,
     timestamp: Date.now() - 3600000,
     type: 'user',
@@ -65,14 +85,14 @@ export const INITIAL_POSTS: Post[] = [
 
 export const INITIAL_MESSAGES: Message[] = [
   {
-    id: 'm-1',
-    senderId: 'user-2',
+    id: 'm-0',
+    senderId: 'ai-natch',
     receiverId: 'user-1',
-    content: 'Hey Alex, did you see the new admin post?',
-    timestamp: Date.now() - 100000,
+    content: 'Xin chào, tôi là Natch. Tôi có thể giúp gì cho bạn?',
+    timestamp: Date.now() - 500000,
     type: 'text',
-    status: 'read',
-  },
+    status: 'read'
+  }
 ];
 
 export const SPAM_LIMIT_MS = 10000; // 10 seconds

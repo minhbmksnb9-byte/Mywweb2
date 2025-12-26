@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'user' | 'guest';
+export type UserRole = 'admin' | 'user' | 'guest' | 'ai';
 
 export interface User {
   id: string;
@@ -7,6 +7,16 @@ export interface User {
   avatar: string;
   role: UserRole;
   isOnline?: boolean;
+  friendIds: string[];
+  blockedIds: string[];
+}
+
+export interface Group {
+  id: string;
+  name: string;
+  avatar: string;
+  memberIds: string[];
+  adminId: string;
 }
 
 export interface Comment {
@@ -33,7 +43,7 @@ export interface Post {
 export interface Message {
   id: string;
   senderId: string;
-  receiverId: string | 'group'; // Simplification for demo
+  receiverId: string; // Can be UserId or GroupId
   content: string;
   timestamp: number;
   type: 'text' | 'image' | 'file';
