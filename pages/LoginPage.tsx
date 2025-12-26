@@ -22,14 +22,9 @@ const LoginPage: React.FC = () => {
     navigate('/');
   }
 
-  const fillCredentials = (type: 'admin' | 'user') => {
-      if(type === 'admin') {
-          setEmail('admin123@gmail.com');
-          setPassword('123456789');
-      } else {
-          setEmail('alex@nexus.com');
-          setPassword('password');
-      }
+  const fillUserCredentials = () => {
+      setEmail('alex@nexus.com');
+      setPassword('password');
   }
 
   return (
@@ -100,15 +95,12 @@ const LoginPage: React.FC = () => {
                 </button>
             </div>
 
-            {/* Quick Fill for Demo */}
+            {/* Quick Fill for Demo - Removed Admin Quick Login */}
             <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-                <p className="text-center text-xs text-slate-400 mb-3">Thông tin đăng nhập (Demo)</p>
+                <p className="text-center text-xs text-slate-400 mb-3">Thông tin đăng nhập (Test)</p>
                 <div className="flex space-x-3">
-                    <button onClick={() => fillCredentials('admin')} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600">
-                        Admin (Full Quyền)
-                    </button>
-                    <button onClick={() => fillCredentials('user')} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600">
-                        User (Thành viên)
+                    <button onClick={fillUserCredentials} className="w-full py-1 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600">
+                        User Demo (Thành viên)
                     </button>
                 </div>
             </div>
