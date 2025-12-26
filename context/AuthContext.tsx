@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useRef } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useRef, useEffect } from 'react';
 import { User, UserRole } from '../types';
 import { MOCK_ADMIN, MOCK_USER, MOCK_USERS } from '../constants';
 
@@ -13,11 +13,30 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  // Initialize user from LocalStorage if available
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const savedUser = localStorage.getItem('nexus_session_user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (error) {
+      console.error("Failed to parse user session", error);
+      return null;
+    }
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   
   // Security simulation: Rate limiting login attempts
   const loginAttempts = useRef<{ count: number; windowStart: number }>({ count: 0, windowStart: Date.now() });
+
+  // Sync user state to LocalStorage
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('nexus_session_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('nexus_session_user');
+    }
+  }, [user]);
 
   const login = async (email: string, pass: string): Promise<boolean> => {
     setIsLoading(true);
@@ -53,18 +72,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const guestLogin = () => {
-    setUser({
+    const guestUser: User = {
         id: 'guest',
         name: 'Guest User',
         email: '',
         avatar: 'https://picsum.photos/seed/guest/200/200',
         role: 'guest',
         isOnline: true
-    });
+    };
+    setUser(guestUser);
   }
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('nexus_session_user');
   };
 
   return (

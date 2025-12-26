@@ -18,15 +18,42 @@ interface DataContextType {
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
+// Helper to load from storage or fallback to default
+const loadFromStorage = <T,>(key: string, fallback: T): T => {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch (e) {
+    console.error(`Error loading key ${key}`, e);
+    return fallback;
+  }
+};
+
 export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useAuth();
-  const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS);
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
-  const [comments, setComments] = useState<Comment[]>([]);
+  
+  // Initialize state with LocalStorage data or Fallback constants
+  const [posts, setPosts] = useState<Post[]>(() => loadFromStorage('nexus_posts', INITIAL_POSTS));
+  const [messages, setMessages] = useState<Message[]>(() => loadFromStorage('nexus_messages', INITIAL_MESSAGES));
+  const [comments, setComments] = useState<Comment[]>(() => loadFromStorage('nexus_comments', []));
+  
   const [notifications, setNotifications] = useState<Notification[]>([]);
   
-  // Rate limiting for comments: userId -> lastTimestamp
+  // Rate limiting for comments: userId -> lastTimestamp (In-memory is fine for rate limiting session)
   const [lastCommentTime, setLastCommentTime] = useState<Record<string, number>>({});
+
+  // Persist data whenever it changes
+  useEffect(() => {
+    localStorage.setItem('nexus_posts', JSON.stringify(posts));
+  }, [posts]);
+
+  useEffect(() => {
+    localStorage.setItem('nexus_messages', JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem('nexus_comments', JSON.stringify(comments));
+  }, [comments]);
 
   const addNotification = useCallback((message: string, type: Notification['type']) => {
     const id = Date.now().toString() + Math.random();
